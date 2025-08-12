@@ -1,0 +1,58 @@
+# Data files
+data/*.csv
+data/*.xlsx
+data/*.json
+data/raw/
+data/processed/
+
+# Models
+models/*.joblib
+models/*.pkl
+models/*.h5
+models/*.pth
+models/saved_models/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+ENV/
+.venv/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+Thumbs.db
+.DS_Store
+*~
+
+# Logs & Output
+*.log
+logs/
+output/
+results/
+
+# Environment
+.env
+config_local.yaml
+secrets.yaml
+
+# ML specific
+checkpoints/
+runs/
+wandb/
+mlruns/
+*.hdf5
+*.parquet
