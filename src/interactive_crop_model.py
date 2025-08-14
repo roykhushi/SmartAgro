@@ -4,10 +4,6 @@ from pathlib import Path
 import warnings
 warnings.filterwarnings('ignore')
 
-from sklearn.ensemble import RandomForestClassifier
-from sklearn.preprocessing import LabelEncoder, StandardScaler
-from sklearn.pipeline import Pipeline
-from sklearn.impute import SimpleImputer
 import joblib
 
 class InteractiveCropModel:
@@ -23,14 +19,11 @@ class InteractiveCropModel:
         """Load the best trained model"""
         print("Loading trained model...")
         
-        # Get the project root directory (parent of src/)
         current_file = Path(__file__)
         project_root = current_file.parent.parent
         
-        # Try to load the comprehensive model first
         model_path = project_root / "models" / "comprehensive_final_model.joblib"
         if not model_path.exists():
-            # Fallback to other models
             model_path = project_root / "models" / "final_production_model.joblib"
             if not model_path.exists():
                 model_path = project_root / "models" / "improved_high_accuracy_model.joblib"
@@ -42,6 +35,8 @@ class InteractiveCropModel:
         try:
             self.model = joblib.load(model_path)
             print(f"✅ Model loaded: {model_path.name}")
+            print(f"Model Type: {type(self.model)}")
+            print(f"Model Parameters: {self.model.get_params()}")
             
             # Load label encoder
             encoder_path = model_path.parent / f"{model_path.stem.replace('_model', '_label_encoder')}.joblib"
@@ -62,7 +57,7 @@ class InteractiveCropModel:
             return False
     
     def engineer_features(self, input_data):
-        """Create engineered features for prediction"""
+
         df = pd.DataFrame([input_data])
         
         # 1. Core nutrient interaction features
@@ -137,10 +132,10 @@ class InteractiveCropModel:
             for feature in missing_features:
                 df_eng[feature] = 0  # Default value for missing features
         
-        # Handle categorical features
+        # Handle categorical features 
         categorical_features = []
         for i, col in enumerate(df_eng.columns):
-            if df_eng[col].dtype == 'object' or df_eng[col].nunique() < 20:
+            if df_eng[col].dtype == 'object':  # Only convert string/object columns
                 categorical_features.append(i)
         
         # Convert categorical features to numerical
